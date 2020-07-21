@@ -13,9 +13,13 @@ addpath('SeDuMi_1_3')
 
 % Example 2
 % https://link.springer.com/content/pdf/10.1007/s10444-019-09717-6.pdf
-A = [0.3,   -1,    0;
-       1,  0.5, -0.3;
-       0,   -1,    0];
+% A = [0.3,   -1,    0;
+%        1,  0.5, -0.3;
+%        0,   -1,    0];
+
+% Example 3
+% randomly generated
+A = randn(3,3)+1i*randn(3,3);    
 
 A_real = real(A);
 A_image= imag(A);
@@ -28,8 +32,8 @@ mpol('X_image',n,n)
 LMI = 2; % order of SDP relaxation
 
 P = msdp(min(trace(X_real'*X_real)+trace(X_image'*X_image)),...
-    (A_real+X_real)'*(A_real+X_real)+(A_image+X_image)'*(A_image+X_image)-(A_real+X_real)*(A_real+X_real)'-(A_image+X_image)*(A_image+X_image)'==0, ...
-    (A_image+X_image)*(A_real+X_real)'-(A_real+X_real)*(A_image+X_image)'+(A_image+X_image)'*(A_real+X_real)-(A_real+X_real)'*(A_image+X_image)==0, ...
+    [(A_real+X_real)'*(A_real+X_real)+(A_image+X_image)'*(A_image+X_image)-(A_real+X_real)*(A_real+X_real)'-(A_image+X_image)*(A_image+X_image)'==0, ...
+    (A_image+X_image)*(A_real+X_real)'-(A_real+X_real)*(A_image+X_image)'+(A_image+X_image)'*(A_real+X_real)-(A_real+X_real)'*(A_image+X_image)==0], ...
     LMI);
 [status,obj] = msol(P);
 
